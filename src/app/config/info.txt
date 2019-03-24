@@ -1,9 +1,0 @@
-Um zwischen 2 Instanzen (z.B. Afrikaportal und Testsuchmaschine von Martin) zu wechseln, bitte folgende Dateien anpassen
-* app.module.ts
-* user-config-service.ts
-* search.component.ts
-* landing-page.component.ts
-* elastic-search.service.ts
-
-Anpassungen
-* index/type in angularx_elasticsearch_proxy_unibas.php setzen

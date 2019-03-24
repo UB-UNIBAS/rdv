@@ -1,55 +1,36 @@
-//Fuer Config anpassen
-//import { BackendSearchService } from 'app/services/solr-search.service';
-import { BackendSearchService } from 'app/services/elastic-search.service';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { SearchComponent } from './components/search/search.component';
-import { AboutComponent } from './components/about/about.component'
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
-
-import { UserConfigService } from 'app/services/user-config.service';
-import { ObjectKeysPipe } from './pipes/object-keys.pipe';
-
-import { ChartsModule } from 'ng2-charts';
-import { IonRangeSliderModule } from "ng2-ion-range-slider";
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ClipboardModule } from 'ngx-clipboard';
+import { AppComponent } from './core/containers/app.component';
+import { SearchComponent } from './search-form/components/search.component';
+import { SearchFormModule } from './search-form/search-form.module';
+import { backendSearchServiceProvider } from './shared/services/backend-search.service.provider';
+import { StoreModule } from '@ngrx/store';
+import { metaReducers, reducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { CoreModule } from './core/core.module';
+import { EffectsModule } from '@ngrx/effects';
+import { RemoteFilterConfigsEffects } from './core/effects/remote-filter-configs.effects';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ObjectKeysPipe,
-    SearchComponent,
-    AboutComponent,
-    LandingPageComponent,
-  ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
+    SearchFormModule,
+    CoreModule,
     RouterModule.forRoot([
-      { path: '', component: SearchComponent },
-      { path: 'doc/:id', component: LandingPageComponent },
-      { path: 'about', component: AboutComponent },
-      { path: '**', component: SearchComponent }
+      {path: '', component: SearchComponent},
+      {path: '**', component: SearchComponent}
     ]),
-    ChartsModule,
-    IonRangeSliderModule,
-    BrowserAnimationsModule,
-    NgxChartsModule,
-    ClipboardModule
+    StoreModule.forRoot(reducers, {metaReducers}),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([RemoteFilterConfigsEffects]),
   ],
-  providers: [
-    BackendSearchService,
-    UserConfigService],
+  providers: [backendSearchServiceProvider],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

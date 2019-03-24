@@ -1,6 +1,6 @@
 import { browser, by, element } from 'protractor';
 
-export class SolrSearchPage {
+export class RdvPage {
   navigateTo() {
     return browser.get('/');
   }

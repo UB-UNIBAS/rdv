@@ -116,7 +116,7 @@ var GuzzleServer = function(port, log) {
                 return;
             }
             authentifier.check(req, res, function(req, res) {
-                req.url = securedAreaUriParts[4];
+                req.option = securedAreaUriParts[4];
                 requestHandlerCallback(request, req, res);
             });
         } else {

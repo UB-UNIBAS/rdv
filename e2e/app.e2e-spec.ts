@@ -1,10 +1,10 @@
-import { SolrSearchPage } from './app.po';
+import { RdvPage } from './app.po';
 
-describe('solr-search App', () => {
-  let page: SolrSearchPage;
+describe('rdv App', () => {
+  let page: RdvPage;
 
   beforeEach(() => {
-    page = new SolrSearchPage();
+    page = new RdvPage();
   });
 
   it('should display message saying app works', () => {

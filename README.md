@@ -1,33 +1,78 @@
-<<<<<<< HEAD
-# SolrSearch
+# Research Data Viewer (RDV)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.6.
+## Configuration
 
-## Development server
+The application is highly configurable by providing a configuration file. A couple of examples
+can be found in `src/environments`:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+* `elastic` (default) und `production` (production-ready, i.e. optimized for performance)
+* `freidok` and `freidok-prod` (production-ready)
+* `bwsts` and `bwsts-prod` (production-ready)
+* `elastic-mh` and `elastic-mh-prod` (production-ready)
 
-## Code scaffolding
+In order to use another configuration than the default one, start the server with the `-c` option and 
+provide the name of the desired configuration, e.g. `ng serve -c freidok-prod`.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+### Additional configurations
 
-## Build
+1. Copy an existing configuration and change the deviating values
+2. In the `angular.json` file, add respective configuration blocks in the `targets` where you want to use
+your new configuration (i.e. at least the `build` and `serve` targets with paths 
+`targets.build.configurations.new_config` and `targets.serve.configurations.new_config`).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+An example configuration:
 
-## Running unit tests
+```json
+{
+  "targets": {
+    "build": {
+      "configurations": {
+        "new_config": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "fileReplacements": [
+            {
+              "replace": "src/environments/environment.ts",
+              "with": "src/environments/environment.new_config.ts"
+            }
+          ]
+        }
+      }
+    } 
+  }
+}
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Apart from `fileReplacements` all fields can be left out. To avoid repetition, you can also link
+a settings block for a configuration from another target definition:
 
-## Running end-to-end tests
+```json
+{
+  "targets": {
+    "serve": {
+      "configurations": {
+        "new_config": {
+          "browserTarget": "rdv:build:new_config"
+        }
+      }
+    }
+  }
+}
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+__Beware__: If you adjust the index and/or the type of the Elasticsearch cluster, you have to change also the respective settings in `angularx_elasticsearch_proxy_unibas.php`.
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-=======
-# rdv
-Research Data Viewer
->>>>>>> 006a43f16907b4831927c1c2b64b8e41e5d214c0
+## Building documentation
+
+You can build documentation locally with [compodoc](https://compodoc.github.io/compodoc/):
+
+1. Install: `yarn global add @compodoc/compodoc` or `npm -g install @compodoc/compodoc`
+2. Run in application root folder: `compodoc -swp src/tsconfig.app.json`
