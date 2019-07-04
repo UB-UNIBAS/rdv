@@ -47,7 +47,7 @@ export class BasketRequestInterceptor implements HttpInterceptor {
               return event;
             }
           }
-        );
+        ));
       } else {
         return next.handle(req);
       }
