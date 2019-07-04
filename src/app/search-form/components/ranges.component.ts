@@ -11,71 +11,64 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-ranges',
   template: `
-    <ng-container *ngFor="let key of rangeFieldConfig | objectKeys">
-      <!-- DIV pro Range (Jahr, Anzahl Seiten,...) mit Histogramm und Slider -->
-      <div *ngIf="(_shownFacetOrRange$ | async) === 'facet-pills-' + key"
-           class="tab-pane list-group"
-           [class.active]="rangeFieldConfig[key].order == 1"
-           [id]="'facet-pills-' + key"
-           role="tabpanel"
-           aria-labelledby="'facet-pills-' + key + '-tab'">
-
-        <!-- Button "x Eintraege ohne Merkmal y" anzeigen (z.B. Titel ohne Jahr) -->
-        <label class="btn btn-sm btn-outline-primary px-2 py-1 mb-3"
-               [class.active]="(_rangeValuesByKey$ | async)(key).showMissingValues" (click)="toggleMissingValues(key)">
-
-          <!-- Anhak-Symbol -->
-          <span class="fa"
-                [class.fa-check-circle]="(_rangeValuesByKey$ | async)(key).showMissingValues"
-                [class.fa-circle-thin]="!(_rangeValuesByKey$ | async)(key).showMissingValues"></span>
-
-          <!-- Text "x Titel ohne Jahr anzeigen" -->
-          <span>Zeige {{(facetQueryCountByKey$ | async)(key)}} Titel ohne {{rangeFieldConfig[key].label}}</span>
-
-        </label>
-
-        <!-- Chart -->
-        <div style="height: 180px;">
-          <canvas baseChart
-                  [chartType]="'bar'"
-                  [datasets]="rangeData[key].chartData"
-                  [labels]="rangeData[key].chartLabels"
-                  [options]="rangeData[key].chartOptions"
-                  [legend]="false">
-          </canvas>
-        </div>
-
-        <!-- Vorhang ueber Chart -->
-        <div class="curtain_div">
-          <div class="curtain_container">
-            <div class="curtain"
-                 style="background-color: rgba(10, 10, 10, .3); left: 0"
-                 [style.width]="rangeData[key].curtainLeft"></div>
-            <div class="curtain"
-                 style="background-color: rgba(10, 10, 10, .3); right: 0"
-                 [style.width]="rangeData[key].curtainRight"></div>
+    <!--  <ng-container *ngFor="let key of rangeFieldConfig | objectKeys">
+        <div *ngIf="(_shownFacetOrRange$ | async) === 'facet-pills-' + key"
+             class="tab-pane list-group"
+             [class.active]="rangeFieldConfig[key].order == 1"
+             [id]="'facet-pills-' + key"
+             role="tabpanel"
+             aria-labelledby="'facet-pills-' + key + '-tab'">
+  
+          <label class="btn btn-sm btn-outline-primary px-2 py-1 mb-3"
+                 [class.active]="(_rangeValuesByKey$ | async)(key).showMissingValues" (click)="toggleMissingValues(key)">
+  
+            <span class="fa"
+                  [class.fa-check-circle]="(_rangeValuesByKey$ | async)(key).showMissingValues"
+                  [class.fa-circle-thin]="!(_rangeValuesByKey$ | async)(key).showMissingValues"></span>
+  
+            <span>Zeige {{(facetQueryCountByKey$ | async)(key)}} Titel ohne {{rangeFieldConfig[key].label}}</span>
+  
+          </label>
+  
+          <div style="height: 180px;">
+            <canvas baseChart
+                    [chartType]="'bar'"
+                    [datasets]="rangeData[key].chartData"
+                    [labels]="rangeData[key].chartLabels"
+                    [options]="rangeData[key].chartOptions"
+                    [legend]="false">
+            </canvas>
+          </div>
+  
+          <div class="curtain_div">
+            <div class="curtain_container">
+              <div class="curtain"
+                   style="background-color: rgba(10, 10, 10, .3); left: 0"
+                   [style.width]="rangeData[key].curtainLeft"></div>
+              <div class="curtain"
+                   style="background-color: rgba(10, 10, 10, .3); right: 0"
+                   [style.width]="rangeData[key].curtainRight"></div>
+            </div>
+          </div>
+  
+          <div class="rangeslider_div">
+            <ion-range-slider #sliderElement
+                              [id]="key"
+                              type="double"
+                              [min]="rangeFieldConfig[key].min"
+                              [from]="(_rangeValuesByKey$ | async)(key).from"
+                              [to]="(_rangeValuesByKey$ | async)(key).to"
+                              [max]="rangeFieldConfig[key].max"
+                              [grid]="true"
+                              [grid_num]="10"
+                              [prefix]="rangeFieldConfig[key].label + ' '"
+                              [prettify_enabled]="false"
+                              [hide_min_max]="true"
+                              (onChange)="updateSlider($event, key)">
+            </ion-range-slider>
           </div>
         </div>
-
-        <!-- Slider -->
-        <div class="rangeslider_div">
-          <ion-range-slider #sliderElement
-                            [id]="key"
-                            type="double"
-                            [min]="rangeFieldConfig[key].min"
-                            [from]="(_rangeValuesByKey$ | async)(key).from"
-                            [to]="(_rangeValuesByKey$ | async)(key).to"
-                            [max]="rangeFieldConfig[key].max"
-                            [grid]="true"
-                            [grid_num]="10"
-                            [prefix]="rangeFieldConfig[key].label + ' '"
-                            [prettify_enabled]="false"
-                            [hide_min_max]="true"
-                            (onChange)="updateSlider($event, key)">
-          </ion-range-slider>
-        </div>
-      </div>
-    </ng-container>
+      </ng-container> -->
   `,
   styles: [`
     select {
@@ -113,7 +106,7 @@ import { filter } from 'rxjs/operators';
 })
 export class RangesComponent implements OnInit {
   //Variable fuer SliderElemente -> bei Reset zuruecksetzen
-  @ViewChildren('sliderElement') sliderElement: QueryList<IonRangeSliderComponent>;
+  // @ViewChildren('sliderElement') sliderElement: QueryList<IonRangeSliderComponent>;
 
   //Daten fuer Slider und Diagrammerzeugunge
   rangeData = {};
@@ -252,9 +245,9 @@ export class RangesComponent implements OnInit {
   //Slider initialisieren
   private _sliderInit(key?) {
 
-    if (this.sliderElement) {
-      this.sliderElement.toArray().forEach(value => value.reset());
-    }
+    //if (this.sliderElement) {
+    //  this.sliderElement.toArray().forEach(value => value.reset());
+    //}
 
     //Wenn key uebergeben wird, nur diesen bearbeiten, ansonsten alle keys
     const keys = key ? [key] : Object.keys(this.rangeFieldConfig);
