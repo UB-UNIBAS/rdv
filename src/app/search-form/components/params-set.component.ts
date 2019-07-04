@@ -122,8 +122,8 @@ export class ParamsSetComponent {
   facetFieldByKey$: Observable<any>;
 
   private static _checkIfSearchFieldsAreEmpty(fields: any) {
-    for (const field of fields) {
-      if (field.value) {
+    for (const key of Object.keys(fields)) {
+      if (fields[key].value) {
         return false;
       }
     }
