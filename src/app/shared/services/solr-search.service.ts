@@ -18,11 +18,11 @@ export class SolrBackendSearchService extends BackendSearchService {
 
   //Felder, die bei normaler Suche fuer die Treffertabelle geholt werden, schon direkt als koma-getrennter String ->
   //id,person_all_string,ti_all_string,py_string
-  private tableFields: string;
+  private readonly tableFields: string;
 
   //Felder, die bei der Detailsuche geholt werden, schon direkt als komma-getrenner String ->
   //keyword_all_string,source_title_all_string,pages_string
-  private detailFields: string;
+  private readonly detailFields: string;
 
   //Anzahl der Treffer pro Merklisten-Anfrage
   private basketRows: number;
