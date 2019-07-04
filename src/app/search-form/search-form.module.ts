@@ -46,7 +46,7 @@ import {SearchRequestInterceptor} from "../shared/services/search-request-interc
     CommonModule,
     ReactiveFormsModule,
     ChartsModule,
-    IonRangeSliderModule,
+    // IonRangeSliderModule,
     BrowserAnimationsModule,
     NgxChartsModule,
     ClipboardModule,
