@@ -104,7 +104,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this._route.queryParamMap.subscribe(params => {
       if (params.get("search")) {
         this._searchRequestFromUrl(params);
-      } else if (localStorage.getItem("userQuery")) {
+      } else if (localStorage.getItem("userQuery") || localStorage.getItem("userQuery") !== "undefined") {
         this._searchRequestFromLocalStorage();
       }
 
