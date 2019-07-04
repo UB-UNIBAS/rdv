@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {select, Store} from '@ngrx/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 
 import * as fromSearch from '../reducers';
 import * as fromSavedQueryActions from '../actions/saved-query.actions';
-import {randomHashCode} from '../../shared/utils';
-import {environment} from '../../../environments/environment';
-import {BehaviorSubject, Subject} from "rxjs";
+import { randomHashCode } from '../../shared/utils';
+import { environment } from '../../../environments/environment';
+import { BehaviorSubject, Subject } from "rxjs";
 
 @Component({
   selector: 'app-save-query',
@@ -37,7 +37,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 
         <!-- Info bei Fehler im Namensfeld von "UserQuery speichern" -->
         <div class="input-group ml-md-2 mt-1 mt-md-0"
-             *ngIf="hasErrors(saveQueryName$ | async)">
+             *ngIf="hasErrors()">
           <div class="bg-danger px-2 rounded"
                *ngIf="isAmbiguous(saveQueryName$ | async)">Name muss eindeutig sein
           </div>
