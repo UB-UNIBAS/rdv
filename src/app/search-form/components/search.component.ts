@@ -1,7 +1,6 @@
+import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
+
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
@@ -13,7 +12,6 @@ import * as fromBasketResultActions from '../actions/basket-result.actions'
 import * as fromSavedQueryActions from '../actions/saved-query.actions';
 import { environment } from '../../../environments/environment';
 import { randomHashCode } from '../../shared/utils';
-import { debounceTime, distinctUntilChanged, filter, map } from "rxjs/operators";
 import { combineLatest } from "rxjs";
 
 /**
@@ -155,8 +153,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         debounceTime(750),
         distinctUntilChanged(),
       )
-    )
-      .map(val => Object.assign(val[0], val[1]))
+    ).pipe(
+      map(val => Object.assign(val[0], val[1])))
       .subscribe(vals => {
         this._combinedQuery = vals;
         this._searchStore.dispatch(new fromQueryActions.MakeSearchRequest(vals));

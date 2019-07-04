@@ -1,13 +1,13 @@
-import {environment} from '../../../environments/environment';
+import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/map';
-import {Observable} from "rxjs/Observable";
-import {QueryFormat} from "app/shared/models/query-format";
-import {Basket} from 'app/search-form/models/basket.model';
-import {HttpClient} from '@angular/common/http';
-import {BackendSearchService} from './backend-search.service';
+import { Observable } from "rxjs";
+import { QueryFormat } from "app/shared/models/query-format";
+import { Basket } from 'app/search-form/models/basket.model';
+import { HttpClient } from '@angular/common/http';
+import { BackendSearchService } from './backend-search.service';
 
 @Injectable()
 export class ElasticBackendSearchService extends BackendSearchService {
@@ -190,9 +190,9 @@ export class ElasticBackendSearchService extends BackendSearchService {
 
     //POST Anfrage
       .post(this.proxyUrl, JSON.stringify(complexQueryFormat), {headers: {'Content-Type': 'application/json', 'X-Request-Type': 'search'}})
-
-      //Antwort als JSON weiterreichen
-      .map((response: any) => response);
+      .pipe(
+        //Antwort als JSON weiterreichen
+        map((response: any) => response));
   }
 
   //Detail-Daten aus Elasticsearch fuer zusaetzliche Zeile holen (abstract,...)
@@ -221,10 +221,9 @@ export class ElasticBackendSearchService extends BackendSearchService {
           'Content-Type': 'application/json',
           'X-Request-Type': 'detailed'
         }
-      })
-
-      //das 1. Dokument als JSON weiterreichen
-      .map((response: any) => response.response.docs[0]);
+      }).pipe(
+        //das 1. Dokument als JSON weiterreichen
+        map((response: any) => response.response.docs[0]));
   }
 
   //Merklisten-Daten in Elasticsearch suchen (ueber IDs)
@@ -252,10 +251,9 @@ export class ElasticBackendSearchService extends BackendSearchService {
           'Content-Type': 'application/json',
           'X-Request-Type': 'basket'
         }
-      })
-
-      //von JSON-Antwort nur die Dokument weiterreichen
-      .map((response: any) => response);
+      }).pipe(
+        //von JSON-Antwort nur die Dokument weiterreichen
+        map((response: any) => response));
   }
 
 }

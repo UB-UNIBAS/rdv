@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 import * as fromBasketActions from '../actions/basket.actions';
 import * as fromSearch from '../reducers';

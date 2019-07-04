@@ -1,9 +1,9 @@
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 import { Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/map';
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { QueryFormat } from "app/shared/models/query-format";
 
 import { Basket } from 'app/search-form/models/basket.model';
@@ -174,11 +174,10 @@ export class SolrBackendSearchService extends BackendSearchService {
     return this.http
 
     //GET Anfrage mit Suchparametern
-      .post(this.proxyUrl, myParams)
-
-      //Antwort als JSON weiterreichen
-      // TODO: Überprüfen, ob valides JSON erstellt wird
-      .map((response: any) => response);
+      .post(this.proxyUrl, myParams).pipe(
+        //Antwort als JSON weiterreichen
+        // TODO: Überprüfen, ob valides JSON erstellt wird
+        map((response: any) => response));
   }
 
   //Detail-Daten aus Solr holen (abstract,...)
@@ -202,10 +201,9 @@ export class SolrBackendSearchService extends BackendSearchService {
     return this.http
 
     //GET Anfrage mit URL Anfrage und Trunkierung
-      .post(this.proxyUrl, myParams)
-
-      //das 1. Dokument als JSON weiterreichen
-      .map((response: any) => response.response.docs[0]);
+      .post(this.proxyUrl, myParams).pipe(
+        //das 1. Dokument als JSON weiterreichen
+        map((response: any) => response.response.docs[0]));
   }
 
   //Merklisten-Daten in Solr suchen
@@ -244,11 +242,10 @@ export class SolrBackendSearchService extends BackendSearchService {
     return this.http
 
     //GET Anfrage mit URL Anfrage und Trunkierung
-      .post(this.proxyUrl, myParams)
-
-      //von JSON-Antwort nur die Dokument weiterreichen
-      // TODO: Überprüfen, ob JSON zurückgeliefert wird
-      .map(response => response as any);
+      .post(this.proxyUrl, myParams).pipe(
+        //von JSON-Antwort nur die Dokument weiterreichen
+        // TODO: Überprüfen, ob JSON zurückgeliefert wird
+        map(response => response as any));
   }
 
 }

@@ -1,6 +1,7 @@
-import {Injectable} from "@angular/core";
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import { map, tap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
+import { Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -17,17 +18,17 @@ export class BasketRequestInterceptor implements HttpInterceptor {
       if (!newRequest) {
         return of(cachedDocuments);
       } else if (cachedDocuments.length === 0) {
-        return next.handle(req).do(event => {
+        return next.handle(req).pipe(tap(event => {
           if (event instanceof HttpResponse) {
             this._put(event)
           }
-        });
+        }));
       } else if (cachedDocuments && newRequest) {
-        return next.handle(req).do(event => {
+        return next.handle(req).pipe(tap(event => {
           if (event instanceof HttpResponse) {
             this._put(event)
           }
-        }).map(event => {
+        }), map(event => {
             if (event instanceof HttpResponse) {
               return new HttpResponse<any>({
                 body: {

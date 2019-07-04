@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { QueryFormat } from '../models/query-format';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { Basket } from '../../search-form/models/basket.model';
 
 @Injectable({

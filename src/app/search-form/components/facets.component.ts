@@ -1,10 +1,10 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {select, Store} from '@ngrx/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
 
 import * as fromSearch from "../reducers";
 import * as fromFormActions from "../actions/form.actions"
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-facets',

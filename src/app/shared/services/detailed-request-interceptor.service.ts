@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from "@angular/common/http";
-import {Observable, of} from "rxjs";
-import "rxjs/add/operator/do";
+import { tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
+import { Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +20,11 @@ export class DetailedRequestInterceptor implements HttpInterceptor {
 
     const cachedResponse = this._get(req);
 
-    return cachedResponse ? of(cachedResponse) : next.handle(req).do(event => {
+    return cachedResponse ? of(cachedResponse) : next.handle(req).pipe(tap(event => {
       if (event instanceof HttpResponse) {
         this._put(req, event);
       }
-    });
+    }));
   }
 
   private _get(req: HttpRequest<any>): HttpResponse<any> | void {

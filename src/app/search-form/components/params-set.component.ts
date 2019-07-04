@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Rx';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as fromFormActions from "../actions/form.actions";
 import * as fromSearch from "../reducers";
 
